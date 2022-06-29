@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Gold balance: {{request.session.balance}}</h1>
+    <div class="row">
+        <div class="col">
+            <form method="post" action="/process_money">
+                <h5>Farm</h5>
+                <h6>(Earns 10-20 gold)</h6>
+                {% csrf_token %}
+                <input type="hidden" name="location" value="farm">
+                <input type="submit" value="Find Gold" class="btn btn-primary ">
+            </form>
+        </div>
+        <div class="col">
+            <form method="post" action="/process_money">
+                <h5>Cave</h5>
+                <h6>(Earns 10-20 gold)</h6>
+                {% csrf_token %}
+                <input type="hidden" name="location" value="cave">
+                <input type="submit" value="Find Gold" class="btn btn-primary ">
+            </form>
+        </div>
+        <div class="col">
+            <form method="post" action="/process_money">
+                <h5>House</h5>
+                <h6>(Earns 10-20 gold)</h6>
+                {% csrf_token %}
+                <input type="hidden" name="location" value="house">
+                <input type="submit" value="Find Gold" class="btn btn-primary ">
+            </form>
+        </div>
+        <div class="col">
+            <form method="post" action="/process_money">
+                <h5>Quest</h5>
+                <h6>(Earns/Takes 0-50 gold)</h6>
+                {% csrf_token %}
+                <input type="hidden" name="location" value="quest">
+                <input type="submit" value="Find Gold" class="btn btn-primary ">
+            </form>
+        </div>
+     
+    </div>
+    {% for activity in request.session.activities %}
+    {% if activity.earnedValue > 0 %}
+       <div class="alert alert-success">you have earned {{activity.activityName}} and earned {{activity.earnedValue}} gold ({{activity.date}}) </div>
+       {% else %}
+       <div class="alert alert-danger">you have earned {{activity.activityName}} and lost {{activity.earnedValue}} gold ({{activity.date}}) </div>
+       {% endif %}
+   {% endfor %} 
+</div>
+
+{% endblock %}
